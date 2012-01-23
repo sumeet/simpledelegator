@@ -4,7 +4,7 @@ import unittest
 from expecter import add_expectation, expect
 import mock
 
-from simpledelegator import SimpleDelegator
+from simpledelegator import SimpleDelegator, delegated
 
 
 class EmptyDelegator(SimpleDelegator):
@@ -102,6 +102,14 @@ class SimpleDelegatorTest(unittest.TestCase):
         c = C(mock.Mock())
         c.prop = value
         expect(c.prop) == value
+
+
+class DelegatedTest(unittest.TestCase):
+
+    def test_returns_object_inside_simple_delegator(self):
+        obj = mock.Mock()
+        delegator = SimpleDelegator(obj)
+        expect(delegated(delegator)) == obj
 
 
 if __name__ == '__main__':
