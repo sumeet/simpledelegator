@@ -71,13 +71,12 @@ class SimpleDelegatorTest(unittest.TestCase):
         expect(obj.some_attr) == delegator.some_attr
 
     def test_can_be_pickled(self):
-        delegator = EmptyDelegator([1, 2, 3])
+        obj = [1, 2, 3]
+        delegator = EmptyDelegator(obj)
         pickled = pickle.dumps(delegator)
         del delegator
         unpickled_delegator = pickle.loads(pickled)
-        # XXX: There should be a less arbitrary way to verify the correctness
-        # of the unpickled delegator.
-        expect(list(reversed(unpickled_delegator))) == [3, 2, 1]
+        expect(delegated(unpickled_delegator)) == obj
 
     def test_can_read_from_properties(self):
         class C(SimpleDelegator):
