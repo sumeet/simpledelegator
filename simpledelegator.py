@@ -1,3 +1,5 @@
+# XXX: Can this be done with a new-style class? Is it bad that this is old-style
+# class?
 class SimpleDelegator:
 
     def __init__(self, obj):
