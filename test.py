@@ -1,7 +1,7 @@
 import cPickle as pickle
 import unittest
 
-from expecter import add_expectation, expect
+from expecter import expect
 import mock
 
 from simpledelegator import SimpleDelegator, delegated
