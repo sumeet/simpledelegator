@@ -4,7 +4,7 @@ import unittest
 from expecter import expect
 import mock
 
-from simpledelegator import SimpleDelegator, delegated
+from simpledelegator import SimpleDelegator, get_delegated, set_delegated
 
 
 class EmptyDelegator(SimpleDelegator):
@@ -76,7 +76,7 @@ class SimpleDelegatorTest(unittest.TestCase):
         pickled = pickle.dumps(delegator)
         del delegator
         unpickled_delegator = pickle.loads(pickled)
-        expect(delegated(unpickled_delegator)) == obj
+        expect(get_delegated(unpickled_delegator)) == obj
 
     def test_can_read_from_properties(self):
         class C(SimpleDelegator):
@@ -100,15 +100,27 @@ class SimpleDelegatorTest(unittest.TestCase):
         value = mock.Mock()
         c = C(mock.Mock())
         c.prop = value
+
         expect(c.prop) == value
 
 
-class DelegatedTest(unittest.TestCase):
+class GetDelegatedTest(unittest.TestCase):
 
-    def test_returns_object_inside_simple_delegator(self):
+    def test_returns_object_inside_delegator(self):
         obj = mock.Mock()
         delegator = SimpleDelegator(obj)
-        expect(delegated(delegator)) == obj
+
+        expect(get_delegated(delegator)) == obj
+
+
+class SetDelegatedTest(unittest.TestCase):
+
+    def test_sets_object_inside_delegator(self):
+        delegator = SimpleDelegator(mock.Mock())
+        another_obj = mock.Mock()
+        set_delegated(delegator, another_obj)
+
+        expect(get_delegated(delegator)) == another_obj
 
 
 if __name__ == '__main__':
