@@ -41,17 +41,17 @@ class SimpleDelegatorTest(unittest.TestCase):
         c = C(mock.Mock())
         expect(c.instancemethod()) == 123
 
-    def test_equality_delegates(self):
+    def test_delegates_equality(self):
         obj = mock.Mock()
         delegator = EmptyDelegator(obj)
         expect(delegator) == obj
 
-    def test_non_equality_delegates(self):
+    def test_delegates_non_equality(self):
         obj = mock.Mock()
         delegator = EmptyDelegator(mock.Mock())
         expect(delegator) != obj
 
-    def test_iteration_delegates(self):
+    def test_delegates_iteration(self):
         obj = ['a', 'b', 'c']
         delegator = EmptyDelegator(obj)
         expect(list(enumerate(delegator))) == [(0, 'a'), (1, 'b'), (2, 'c')]
@@ -65,7 +65,7 @@ class SimpleDelegatorTest(unittest.TestCase):
         expect(len(delegator)) == len(obj)
         expect(bool(delegator)) == bool(obj)
 
-    def test_attributes_are_set_on_the_delegated_object(self):
+    def test_sets_attributes_on_the_delegated_object(self):
         obj = mock.Mock()
         delegator = EmptyDelegator(obj)
         delegator.some_attr = mock.Mock()
@@ -126,10 +126,10 @@ class SetDelegatedTest(unittest.TestCase):
 
 class ReadmeTest(unittest.TestCase):
 
-    def test_example_in_readme_exists(self):
+    def test_contains_tests(self):
         expect(doctest.testfile('README.markdown').attempted) > 0
 
-    def test_example_in_readme_does_not_fail(self):
+    def test_does_not_fail(self):
         expect(doctest.testfile('README.markdown').failed) == 0
 
 if __name__ == '__main__':
