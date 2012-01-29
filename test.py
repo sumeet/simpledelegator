@@ -1,4 +1,5 @@
 import cPickle as pickle
+import doctest
 import unittest
 
 from expecter import expect
@@ -122,6 +123,14 @@ class SetDelegatedTest(unittest.TestCase):
 
         expect(get_delegated(delegator)) == another_obj
 
+
+class ReadmeTest(unittest.TestCase):
+
+    def test_example_in_readme_exists(self):
+        expect(doctest.testfile('README.markdown').attempted) > 0
+
+    def test_example_in_readme_does_not_fail(self):
+        expect(doctest.testfile('README.markdown').failed) == 0
 
 if __name__ == '__main__':
     unittest.main()

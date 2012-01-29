@@ -6,19 +6,23 @@ if Python could pull this off.
 Here's an example using SimpleDelegator as an object decorator.
 
 ```python
->>> from simpledelegator import SimpleDelegator, get_delegated
->>> from collections import namedtuple
->>> class NotADuck(SimpleDelegator):
-        def quack(self):
-            my_type = type(get_delegated(self)).__name__
-            print 'i am not a duck but i am a %s!' % my_type
->>> Cow = namedtuple('Cow', 'weight')
->>> cow = Cow(weight='heavy')
->>> animal = NotADuck(cow)
->>> animal.quack()
-i am not a duck but i am a Cow!
->>> animal.weight
-'heavy'
+    >>> from simpledelegator import SimpleDelegator, get_delegated
+    >>> from collections import namedtuple
+
+    >>> User = namedtuple('User', 'first_name last_name')
+    >>> class UserPresenter(SimpleDelegator):
+    ...     @property
+    ...     def name(self):
+    ...         return self.first_name + ' ' + self.last_name
+
+    >>> user = UserPresenter(User('Bob', 'Smith'))
+    >>> user.first_name
+    'Bob'
+    >>> user.last_name
+    'Smith'
+    >>> user.name
+    'Bob Smith'
+
 ```
 
 [1]: http://ruby-doc.org/stdlib-1.9.3/libdoc/delegate/rdoc/SimpleDelegator.html
