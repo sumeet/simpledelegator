@@ -11,7 +11,7 @@ class SimpleDelegator:
         return (get_delegated(self),)
 
     def __setattr__(self, name, value):
-        descriptor = self.__class__.__dict__.get(name)
+        descriptor = vars(self.__class__).get(name)
         if hasattr(descriptor, '__set__'):
             descriptor.__set__(self, value)
         else:
@@ -22,8 +22,8 @@ class SimpleDelegator:
 
 
 def get_delegated(delegator):
-    return delegator.__dict__['_obj']
+    return vars(delegator)['_obj']
 
 
 def set_delegated(delegator, obj):
-    delegator.__dict__['_obj'] = obj
+    vars(delegator)['_obj'] = obj
