@@ -1,4 +1,4 @@
-# XXX: Can this be done with a new-style class?
+# XXX: Old-style class required to delegate magic methods with __getattr__.
 class SimpleDelegator:
 
     def __init__(self, obj):
