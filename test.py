@@ -8,16 +8,12 @@ import mock
 from simpledelegator import SimpleDelegator, get_delegated, set_delegated
 
 
-class EmptyDelegator(SimpleDelegator):
-    pass
-
-
 class SimpleDelegatorTest(unittest.TestCase):
 
     def test_delegates_to_an_instance_variable(self):
         obj = mock.Mock()
         obj.instancevar = mock.Mock()
-        delegator = EmptyDelegator(obj)
+        delegator = SimpleDelegator(obj)
         expect(delegator.instancevar) == obj.instancevar
 
     def test_delegates_to_an_instancemethod(self):
@@ -25,7 +21,7 @@ class SimpleDelegatorTest(unittest.TestCase):
         class Obj(object):
             def instancemethod(self):
                 return value
-        delegator = EmptyDelegator(Obj())
+        delegator = SimpleDelegator(Obj())
         expect(delegator.instancemethod()) == value
 
     def test_returns_a_class_variable_assigned_on_the_delegator(self):
@@ -43,37 +39,36 @@ class SimpleDelegatorTest(unittest.TestCase):
 
     def test_delegates_equality(self):
         obj = mock.Mock()
-        delegator = EmptyDelegator(obj)
+        delegator = SimpleDelegator(obj)
         expect(delegator) == obj
 
     def test_delegates_non_equality(self):
         obj = mock.Mock()
-        delegator = EmptyDelegator(mock.Mock())
+        delegator = SimpleDelegator(mock.Mock())
         expect(delegator) != obj
 
     def test_delegates_iteration(self):
-        obj = ['a', 'b', 'c']
-        delegator = EmptyDelegator(obj)
+        delegator = SimpleDelegator(['a', 'b', 'c'])
+        expect(list(iter(delegator))) == ['a', 'b', 'c']
         expect(list(enumerate(delegator))) == [(0, 'a'), (1, 'b'), (2, 'c')]
 
     def test_delegates_various_magic_methods(self):
         obj = mock.MagicMock()
-        delegator = EmptyDelegator(obj)
+        delegator = SimpleDelegator(obj)
         expect(str(delegator)) == str(obj)
         expect(int(delegator)) == int(obj)
-        expect(iter(delegator)) == iter(obj)
         expect(len(delegator)) == len(obj)
         expect(bool(delegator)) == bool(obj)
 
     def test_sets_attributes_on_the_delegated_object(self):
         obj = mock.Mock()
-        delegator = EmptyDelegator(obj)
+        delegator = SimpleDelegator(obj)
         delegator.some_attr = mock.Mock()
         expect(obj.some_attr) == delegator.some_attr
 
     def test_can_be_pickled(self):
         obj = [1, 2, 3]
-        delegator = EmptyDelegator(obj)
+        delegator = SimpleDelegator(obj)
         pickled = pickle.dumps(delegator)
         del delegator
         unpickled_delegator = pickle.loads(pickled)
